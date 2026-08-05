@@ -1,0 +1,118 @@
+<nav class="navbar navbar-dark bg-primary mb-4 shadow-sm py-3">
+  <div class="container">
+    <span class="navbar-brand mb-0 h1 titulo-app">💰 Gestão Financeira Pessoal</span>
+  </div>
+</nav>
+
+<div class="container mb-5">
+  <div class="row g-4">
+    
+    <!-- Formulário Categoria -->
+    <div class="col-md-4">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white text-primary fw-bold">Nova Categoria</div>
+        <div class="card-body">
+          <form (ngSubmit)="salvarCategoria()">
+            <div class="mb-3">
+              <label class="form-label">Nome</label>
+              <input type="text" class="form-control" [(ngModel)]="novaCategoria.nome" name="catNome" placeholder="Ex: Salário, Mercado" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Tipo</label>
+              <select class="form-select" [(ngModel)]="novaCategoria.tipo" name="catTipo">
+                <option value="RECEITA">Receita</option>
+                <option value="DESPESA">Despesa</option>
+              </select>
+            </div>
+            <div class="text-center mt-3">
+              <button type="submit" class="btn btn-primary">Cadastrar Categoria</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulário Transação -->
+    <div class="col-md-8">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white text-success fw-bold">Nova Transação</div>
+        <div class="card-body">
+          <form (ngSubmit)="salvarTransacao()">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Descrição</label>
+                <input type="text" class="form-control" [(ngModel)]="novaTransacao.descricao" name="descricao" placeholder="Ex: Compra do mês" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Valor (R$)</label>
+                <input type="number" step="0.01" class="form-control" [(ngModel)]="novaTransacao.valor" name="valor" placeholder="0.00" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Categoria</label>
+                <select class="form-select" [(ngModel)]="novaTransacao.categoriaId" name="categoriaId" required>
+                  <option [value]="0">Selecione uma categoria...</option>
+                  <option *ngFor="let cat of categorias" [value]="cat.id">
+                    {{ cat.nome }} ({{ cat.tipo }})
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Data</label>
+                <input type="date" class="form-control" [(ngModel)]="novaTransacao.data" name="data" required>
+              </div>
+              <div class="col-12 text-center mt-4">
+                <button type="submit" [class]="transacaoEmEdicaoId ? 'btn btn-warning' : 'btn btn-success'">
+                  {{ transacaoEmEdicaoId ? 'Atualizar Transação' : 'Registrar Transação' }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tabela de Transações -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-white text-dark fw-bold">Histórico de Transações</div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Data</th>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of transacoes">
+              <td>{{ t.data }}</td>
+              <td class="fw-bold">{{ t.descricao }}</td>
+              <td><span class="badge bg-secondary">{{ t.categoria.nome }}</span></td>
+              <td>
+                <span class="badge" [ngClass]="t.categoria.tipo === 'RECEITA' ? 'bg-success' : 'bg-danger'">
+                  {{ t.categoria.tipo }}
+                </span>
+              </td>
+              <td [ngClass]="t.categoria.tipo === 'RECEITA' ? 'text-success' : 'text-danger'" class="fw-bold">
+                {{ t.categoria.tipo === 'RECEITA' ? '+' : '-' }} R$ {{ t.valor | number:'1.2-2' }}
+              </td>
+              <td class="text-center">
+                <button class="btn btn-small btn-cancel me-1" (click)="prepararEdicao(t)">✏️ Editar</button>
+                <button class="btn btn-small btn-error" (click)="deletarTransacao(t.id)">🗑️ Excluir</button>
+              </td>
+            </tr>
+            <tr *ngIf="transacoes.length === 0">
+              <td colspan="6" class="text-center text-muted py-3">Nenhuma transação cadastrada.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+body {
+    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+}
+
+.titulo-app {
+    font-size: 1.75rem !important;
+    font-weight: 700;
+}
+
+/* Padronização de Botões */
+.btn {
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary { background-color: #0d6efd !important; color: #ffffff !important; }
+.btn-success { background-color: #1e7e34 !important; color: #ffffff !important; }
+.btn-warning { background-color: #ffc107 !important; color: #000000 !important; }
+.btn-cancel { background-color: #ffffff !important; border: 1px solid #6c757d !important; color: #495057 !important; }
+.btn-error { background-color: #dc3545 !important; color: #ffffff !important; }
+.btn-small { padding: 4px 12px; font-size: 0.8rem; }
